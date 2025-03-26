@@ -87,6 +87,10 @@ pub fn http_to_ws(url: &str) -> Result<String, &'static str> {
 
 /// Convert a url string into a Ws equivalent
 pub fn get_ws_url(url: &str) -> SdkResult<String> {
+    // use env DRIFT_WS_URL if it is set
+    if let Ok(ws_url) = std::env::var("DRIFT_WS_URL") {
+        return Ok(ws_url);
+    }
     if url.starts_with("http://") || url.starts_with("https://") {
         Ok(url.replacen("http", "ws", 1))
     } else if url.starts_with("wss://") || url.starts_with("ws://") {
